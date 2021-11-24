@@ -1,0 +1,114 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Player_Behaviour : MonoBehaviour
+{
+    [Header("Variables")]
+    public bool CanMove;
+    public float RunSpeed;
+    public float jumpForce = 10f;
+
+    //Variables para detectar el suelo y salto
+    [Header("GroundCheck")]
+    public LayerMask WhatIsGrd;
+    public Transform grdChecker;
+    public float grdCheckerRad;
+    public bool grounded;
+    public bool IsMoving;
+
+    [Header("JumpEffects")]
+    public GameObject m_JumpDust;
+
+    Rigidbody2D rb;
+    SpriteRenderer spr;
+    Animator anim;
+    AudioSource aud;
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        spr = GetComponent<SpriteRenderer>();
+        anim = GetComponent<Animator>();
+        aud = GetComponent<AudioSource>();    
+    }
+
+    void Update()
+    {
+        //Movement
+        if (Input.GetKey("d") && CanMove == true)
+        {
+            spr.flipX = false;
+            IsMoving = true;
+            runRight();
+        }
+        else if (Input.GetKey("a") && CanMove == true)
+        {
+            spr.flipX = true;
+            IsMoving = true;
+            runLeft();
+        }
+        else
+        {
+            rb.velocity = new Vector2(0, rb.velocity.y);
+            anim.SetBool("Running", false);
+            aud.Stop();
+        }
+        /////////////////////////////////////////////////////
+    }
+
+    private void FixedUpdate()
+    {
+        grounded = Physics2D.OverlapCircle(grdChecker.position, grdCheckerRad, WhatIsGrd);
+        Jump();
+    }
+
+    void Jump()
+    {
+        anim.SetBool("Jump", true);
+
+        if (grounded == true)
+        {
+            anim.SetBool("Jump", false);
+
+            if (Input.GetKey(KeyCode.Space))
+            {
+                rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+                AE_Jump();
+            }
+        }
+    }
+
+    void runRight()
+    {
+        rb.velocity = new Vector2(RunSpeed, rb.velocity.y);
+        anim.SetBool("Running", true);
+
+        if (IsMoving && !aud.isPlaying) aud.Play();
+        if (!IsMoving || !grounded) aud.Stop();
+    }
+
+    void runLeft()
+    {
+        rb.velocity = new Vector2(-RunSpeed, rb.velocity.y);
+        anim.SetBool("Running", true);
+
+        if (IsMoving && !aud.isPlaying) aud.Play();
+        if (!IsMoving || !grounded) aud.Stop();
+    }
+
+    void SpawnDustEffect(GameObject dust, float dustXOffset = 0)
+    {
+        if (dust != null)
+        {
+            Vector3 dustSpawnPosition = transform.position + new Vector3(dustXOffset, 0.0f, 0.0f);
+            GameObject newDust = Instantiate(dust, dustSpawnPosition, Quaternion.identity) as GameObject;
+            newDust.transform.localScale = newDust.transform.localScale.x * new Vector3(1, 1);
+        }
+    }
+
+    void AE_Jump()
+    {
+        SpawnDustEffect(m_JumpDust, 0.2f);
+    }
+}
