@@ -54,13 +54,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Assets\Downloaded\Free Pixel Art Forest\Demo\MoveBackground.cs" />
+    <Compile Include="Assets\Scripts\BowEnemy_Behaviour.cs" />
     <Compile Include="Assets\Prototype Hero Demo - Pixel Art\Demo\PrototypeHeroDemo.cs" />
     <Compile Include="Assets\Scripts\Player_Behaviour.cs" />
     <Compile Include="Assets\Prototype Hero Demo - Pixel Art\Demo\Dust_DestroyEvent.cs" />
+    <Compile Include="Assets\Scripts\SpawningSystem.cs" />
     <Compile Include="Assets\Prototype Hero Demo - Pixel Art\Demo\Sensor_Prototype.cs" />
     <Compile Include="Assets\Prototype Hero Demo - Pixel Art\Demo\AudioManager_PrototypeHero.cs" />
-    <Compile Include="Assets\Scripts\BowEnemy_Behaviour.cs" />
-    <Compile Include="Assets\Scripts\SpawningSystem.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Downloaded\Hero and Opponents\license.txt" />
