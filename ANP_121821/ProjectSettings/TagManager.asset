@@ -17,9 +17,9 @@ TagManager:
   - WrldColliders
   - MainCamera
   - CamCollider
-  - 
-  - 
-  - 
+  - Player
+  - Enemy
+  - SpawnColliders
   - 
   - 
   - 
