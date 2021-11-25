@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class Player_Behaviour : MonoBehaviour
 {
@@ -24,6 +25,8 @@ public class Player_Behaviour : MonoBehaviour
     SpriteRenderer spr;
     Animator anim;
     AudioSource aud;
+
+    Vector3 targetPosition;
 
     void Start()
     {
@@ -55,6 +58,12 @@ public class Player_Behaviour : MonoBehaviour
             aud.Stop();
         }
         /////////////////////////////////////////////////////
+
+        if (Input.GetKeyDown(KeyCode.Mouse1) && grounded)
+        {
+            targetPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Dash(targetPosition);
+        }
     }
 
     private void FixedUpdate()
@@ -110,5 +119,10 @@ public class Player_Behaviour : MonoBehaviour
     void AE_Jump()
     {
         SpawnDustEffect(m_JumpDust, 0.2f);
+    }
+
+    void Dash(Vector2 _targetPosition)
+    {
+        transform.DOMove(_targetPosition, 0.2f);
     }
 }
